@@ -1,0 +1,84 @@
+
+
+mainFunction <- function(){
+
+  library(rjson);
+
+  ########## security escapes (to be improved) ##############
+  safeJson <- gsub("[()]","",POST$inputList);
+  ###########################################################
+  
+  inputList <- fromJSON(safeJson);
+  randomNum <- inputList$dataFile;
+  dataType <- inputList$dataType;
+  dataHeader <- as.logical(inputList$dataHeader);
+  dataSep <- inputList$dataSep;
+  dataDec <- inputList$dataDec;
+  
+  dataFileName <- paste(randomNum,".RData",sep="");
+  dataFileDest <- file.path('/rdata/ggplot2/Rdatafiles',dataFileName);
+  load(dataFileDest);
+  
+  xlsImport <- function(destination,header){
+    library(gdata);
+    return(read.xls(destination,header=header));
+  }
+  
+  myData <- switch(dataType,
+    "csv" = read.csv(destination, header=dataHeader, sep=dataSep, dec=dataDec),
+    "csv2" = read.csv2(destination, header=dataHeader, sep=dataSep, dec=dataDec),
+    "delim" = read.delim(destination, header=dataHeader, sep=dataSep, dec=dataDec),
+    "delim2" = read.delim2(destination, header=dataHeader, sep=dataSep, dec=dataDec),
+    "xls" = xlsImport(destination, header=dataHeader),
+    stop(paste("invalid dataType: ",dataType))
+  );
+  
+  save(destination, myData, file=dataFileDest);
+  
+  #process return data:
+  outputList <- list();
+  
+  guessedList <- list();
+  guessedList$type <- dataType;
+  guessedList$header <- dataHeader;
+  guessedList$dec <- dataDec;
+  guessedList$sep <- dataSep
+  outputList$guess <- guessedList;
+  
+  tryData <- head(myData,10);
+
+  #variable names:
+  outputList$variableNames <- names(tryData);
+
+  #TEMP FIX REMOVES DOTS TO PREVENT JAVASCRIPT ISSUES:
+  outputList$variableNames <- gsub("\\.","_",outputList$variableNames)
+
+  #variable data in jsonstore format:
+  tryMatrix <- as.matrix(tryData);
+  attr(tryMatrix,"dimnames") <- NULL;
+  outputList$variableData <- apply(tryMatrix,1,as.list);
+  
+  #finally:
+  outputList$success <- TRUE;
+  cat(toJSON(outputList));
+}
+
+
+
+printFailure <- function(e){
+    errorString <- toString(e$message);
+    errorString <- gsub("\"","'",errorString);
+    errorString <- gsub("\n"," ",errorString);
+    cat("{success:false, error:\"",errorString,"\"}",sep="");
+}
+
+#EXECUTED:
+setwd("/rdata/ggplot2");
+setTimeLimit(elapsed=60);
+mem.limits(vsize=500*1024*1024);
+
+setContentType('text/html');
+tryCatch(mainFunction(), error = function(e){printFailure(e)});
+
+setTimeLimit();
+

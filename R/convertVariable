@@ -1,0 +1,78 @@
+
+
+mainFunction <- function(){
+
+  library(rjson);
+  
+  ########## security escapes (to be improved) ##############
+  safeJson <- gsub("[()]","",POST$inputList);
+  ###########################################################
+  
+  inputList <- fromJSON(safeJson);
+  randomNum <- inputList$dataFile
+  varName <- inputList$varName;
+  targetType <- inputList$targetType;
+  dateFormat <- inputList$dateFormat;
+  if(dateFormat=="") dateFormat <- NULL;
+  
+  dataFileName <- paste(randomNum,".RData",sep="");
+  dataFileDest <- file.path('/rdata/ggplot2/Rdatafiles',dataFileName);
+  load(dataFileDest);
+
+  if(targetType == "Numeric"){
+    myData[[varName]] <- as.numeric(myData[[varName]]);
+  }
+
+  if(targetType == "Factor"){
+    myData[[varName]] <- as.factor(myData[[varName]]);
+  }
+
+  if(targetType == "Date"){
+    if(is.null(dateFormat)){
+      dateVariable <- as.Date(as.character(myData[[varName]]));
+    } else {
+      dateVariable <- as.Date(as.character(myData[[varName]]), format=dateFormat);
+    }
+    
+    if(all(is.na(dateVariable))){
+      stop("Conversion to date failed. Please check your format");
+    }
+    
+    NA1 <- is.na(myData[[varName]]);
+    NA2 <- is.na(dateVariable);
+    newNA <- (!NA1 & NA2)
+    
+    if(any(newNA)){
+      varLength <- length(NA1);
+      newNAlines <- c(1:varLength)[newNA];
+      stop("Conversion failed on lines: ",paste(head(newNAlines),collapse=","));
+    }
+    
+    myData[[varName]] <- dateVariable;
+
+  }
+  save(dataFileDest, myData, file=dataFileDest);
+  outputList <- inputList
+  outputList$success <- TRUE;
+  cat(toJSON(outputList));
+}
+
+
+
+printFailure <- function(e){
+    errorString <- toString(e$message);
+    errorString <- gsub("\"","'",errorString);
+    errorString <- gsub("\n"," ",errorString);
+    cat("{success:false, error:\"",errorString,"\"}",sep="");
+}
+
+#EXECUTED:
+setwd("/rdata/ggplot2");
+setTimeLimit(elapsed=60);
+mem.limits(vsize=500*1024*1024);
+
+setContentType('text/html');
+tryCatch(mainFunction(), error = function(e){printFailure(e)});
+
+setTimeLimit();
+

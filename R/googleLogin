@@ -1,0 +1,46 @@
+
+
+mainFunction <- function(){
+    library(RCurl);
+
+    AuthSubSessionToken <- function(tempToken){
+        authorization <- paste('AuthSub token="',tempToken,'"',sep="");
+        output <- getURL("https://www.google.com/accounts/AuthSubSessionToken",ssl.verifypeer=F,httpheader=c(authorization=authorization));
+        if(grepl("Invalid AuthSub",output)){
+          stop("Invalid token. Please remove any history/cache from your browser and try again.");
+        }
+        return(output);
+    }
+
+    tempToken <- GET$token;
+    domain <- GET$domain;
+
+    myToken <- AuthSubSessionToken(tempToken);
+    myToken <- sub("\n","",myToken);
+    myToken <- sub("Token=","",myToken);
+
+    if(is.null(domain)){
+      setCookie('token',myToken,path="/");
+    } else {
+      setCookie('token',myToken,path="/", domain=domain);
+    }
+    
+    cat("Google login succeeded; google features should now be enabled. You can close this window.");
+}
+
+printFailure <- function(e){
+    errorString <- toString(e$message);
+    errorString <- gsub("\"","'",errorString);
+    errorString <- gsub("\n"," ",errorString);
+    cat("Something went wrong: error: \"",errorString,"\"",sep="");
+}
+
+#EXECUTED:
+setTimeLimit(elapsed=60);
+mem.limits(vsize=500*1024*1024);
+
+setContentType('text/html');
+tryCatch(mainFunction(), error = function(e){printFailure(e)});
+
+setTimeLimit();
+

@@ -1,0 +1,517 @@
+{
+	"Defaults": [
+	  {
+		"name":"x",
+		"map": true,
+		"required": true
+	  },
+	  {
+		"name":"y",
+		"map": true,
+		"required": true
+	  },
+	  {
+		"name":"weight",
+		"map": true,
+		"required": false
+	  },	  
+	  "-",
+	  {
+		"name":"group",
+		"map": true,
+		"required": false
+	  },
+	  {
+		"name":"colour",
+		"map": true,
+		"required": false
+	  },"-"	  
+	],
+	
+	"Facet": [
+	  {
+		"name": "map",
+		"map": true,
+		"set": false,
+		"required": false
+	  },
+	  {
+		"name": "nrow",
+		"map": false,
+		"set": true,
+		"required": false,
+		"values": [1,2,3,4,5,6,7,8,9,10]
+	  },	  
+	  {
+		"name": "scales",
+		"map": false,
+		"set": true,
+		"required": false,
+		"values": ["fixed","free","free_x","free_y"]
+	  }
+	],
+
+	"Geoms1": [
+	  {
+		"geom":"histogram",
+		"stat":"bin",
+		"aes":["binwidth","colour","fill","size","linetype","weight","alpha","position"],
+		"position":"stack"
+	  },	  
+	  {
+		"geom":"density",
+		"stat":"density",
+		"aes":["kernel","adjust","fill","weight","colour","alpha","size","linetype"],
+		"position":"identity"
+	  },
+	  {
+		"geom":"freqpoly",
+		"stat":"bin",
+		"aes":["binwidth","colour","size","linetype","alpha"],
+		"position":"identity"
+	  }
+	],
+
+	"Geoms2": [
+	  {
+		"geom":"area",
+		"stat":"identity",
+		"aes":["colour","fill","size","linetype","alpha"],
+		"position":"stack"
+	  },
+	  {
+		"geom":"bar",
+		"stat":"bin",
+		"aes":["colour","fill","size","linetype","weight","alpha","position"],
+		"position":"identity"
+	  },	  
+	  {
+		"geom":"bin2d",
+		"stat":"bin2d",
+		"aes":["bins","colour","fill","size","linetype","weight","alpha"],
+		"position":"identity"
+	  },
+	  {
+		"geom":"boxplot",
+		"stat":"boxplot",
+		"aes":["weight","colour","fill","size","alpha"],
+		"position":"identity"
+	  },	  
+	  {
+		"geom":"contour",
+		"stat":"contour",
+		"aes":["z","binwidth","bins","weight","colour","size","linetype","alpha"],
+		"position":"identity"
+	  },
+	  {
+		"geom":"density2d",
+		"stat":"density2d",
+		"aes":["bins","colour","size","linetype","alpha"],
+		"position":""
+	  },
+	  {
+		"geom":"hex",
+		"stat":"binhex",
+		"aes":["bins","colour","fill","size","alpha"],
+		"position":"identity"
+	  },
+	  {
+		"geom":"path",
+		"stat":"identity",
+		"aes":["colour","size","linetype","alpha"],
+		"position":"identity"
+	  },
+	  {
+		"geom":"polygon",
+		"stat":"identity",
+		"aes":["colour","fill","size","linetype","alpha"],
+		"position":"identity"
+	  },
+	  {
+		"geom":"point",
+		"stat":"identity",
+		"aes":["shape","colour","size","fill","alpha","position"],
+		"position":"identity"
+	  },
+	  {
+		"geom":"quantile",
+		"stat":"quantile",
+		"aes":["number","colour","size","linetype","alpha"],
+		"position":"identity"
+	  },	  
+	  {
+	    "geom":"rug",
+		"stat":"identity",
+		"aes":["colour","size","linetype","alpha","position"],
+		"position":"identity"
+	  },
+	  {
+		"geom":"smooth",
+		"stat":"smooth",
+		"aes":["method","se","colour","fill","size","linetype","weight","alpha"],
+		"position":"identity"
+	  },
+	  {
+		"geom":"step",
+		"stat":"identity",
+		"aes":["direction","colour","size","linetype","alpha"],
+		"position":"identity"
+	  },	  
+	  {
+		"geom":"text",
+		"stat":"identity",
+		"aes":["label","colour","size","angle","alpha"],
+		"position":"identity"
+	  },
+	  {
+		"geom":"tile",
+		"stat":"identity",
+		"aes":["fill","colour","size","linetype","alpha"],
+		"position":"identity"
+	  }	  
+	],
+	
+	"Geoms3": [
+	  {
+		"geom":"abline",
+		"stat":"identity",
+		"aes":["intercept","slope","colour","size","linetype","alpha"],
+		"position":"identity"
+	  },
+	  {
+		"geom":"hline",
+		"stat":"identity",
+		"aes":["yintercept","colour","size","linetype","alpha"],
+		"position":"identity"
+	  },	  
+	  {
+		"geom":"vline",
+		"stat":"identity",
+		"aes":["xintercept","colour","size","linetype","alpha"],
+		"position":"identity"
+	  },
+	  {
+		"geom":"crossbar",
+		"stat":"identity",
+		"aes":["ymin","ymax","colour","fill","size","linetype","alpha"],
+		"position":"identity"
+	  },
+	  {
+		"geom":"errorbar",
+		"stat":"identity",
+		"aes":["ymin","ymax","colour","size","linetype","width","alpha"],
+		"position":"identity"
+	  },
+	  {
+		"geom":"errorbarh",
+		"stat":"identity",
+		"aes":["xmin","xmax","colour","size","linetype","width","alpha"],
+		"position":"identity"
+	  },	  
+	  {
+		"geom":"linerange",
+		"stat":"identity",
+		"aes":["ymin","ymax","colour","size","linetype","alpha"],
+		"position":"identity"
+	  },	
+	  {
+		"geom":"pointrange",
+		"stat":"identity",
+		"aes":["ymin","ymax","colour","size","linetype","shape","alpha","fill"],
+		"position":"identity"
+	  },	
+	  {
+		"geom":"ribbon",
+		"stat":"identity",
+		"aes":["ymin","ymax","colour","fill","size","linetype","alpha"],
+		"position":"identity"
+	  }	
+	],
+
+	"Aesthetics": {
+	  "stat": {
+		"name":"stat",
+		"type": "string",
+		"required": false,
+		"map": false,
+		"set": true,
+		"custom": false,		
+		"values": ["identity"]
+	  },	
+	  "alpha": {
+		"name":"alpha",
+		"type": "numeric",
+		"required": false,
+		"map": true,
+		"set": true,
+		"custom": true,		
+		"values": [0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9]
+	  },
+	  "size": {
+		"name":"size",
+		"type": "numeric",
+		"required": false,
+		"map": true,
+		"set": true,	
+		"custom": true,		
+		"values": [0.1,0.2,0.3,0.4,0.5,0.75,1,1.5,2,3,4,5]
+	  },
+	  "colour": {
+		"name":"colour",
+		"type": "string",
+		"required": false,
+		"map": true,
+		"set": true,	
+		"custom": true,		
+		"values": []
+	  },
+	  "fill": {
+		"name":"fill",
+		"type": "string",
+		"required": false,
+		"map": true,
+		"set": true,	
+		"custom": true,		
+		"values": []
+	  },  
+	  "linetype": {
+		"name":"linetype",
+		"type": "string",
+		"required": false,
+		"map": true,
+		"set": true,	
+		"custom": true,		
+		"values": ["solid","dashed","dotted","dotdash","longdash","twodash"]
+	  },   
+	  "weight": {
+		"name":"weight",
+		"type": "numeric",
+		"required": false,
+		"map": true,
+		"set": false,	
+		"custom": false,		
+		"values": [1]
+	  }, 
+	  "z": {
+		"name":"z",
+		"type": "numeric",
+		"required": true,
+		"map": true,
+		"set": false,
+		"custom": false,		
+		"values": []
+	  },
+	  "shape": {
+		"name":"shape",
+		"type": "numeric",
+		"required": false,
+		"map": true,
+		"set": true,
+		"custom": true,		
+		"values": [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]
+	  },  
+	  "method": {
+		"name":"method",
+		"type": "string",
+		"required": false,
+		"map": false,
+		"set": true,
+		"custom": false,		
+		"values": ["lm","glm","loess"]
+	  },
+	  "se": {
+		"name":"se",
+		"type": "boolean",
+		"required": false,
+		"map": false,
+		"set": true,
+		"custom": false,		
+		"values": ["TRUE","FALSE"]
+	  },  
+	  "kernel": {
+		"name":"kernel",
+		"type": "string",
+		"required": false,
+		"map": false,
+		"set": true,
+		"custom": false,		
+		"values": ["gaussian","rectangular","triangular","cosine","biweight","epanechnikov","optcosine"]
+	  },   
+	  "bins": {
+		"name":"bins",
+		"type": "numeric",
+		"required": false,
+		"map": false,
+		"set": true,
+		"custom": true,		
+		"values": [10,15,20,30,40,50,100]
+	  },
+	  "label": {
+		"name":"label",
+		"type": "string",
+		"required": true,
+		"map": true,
+		"set": false,
+		"custom": false,		
+		"values": []
+	  },	 
+	  "angle": {
+		"name":"angle",
+		"type": "numeric",
+		"required": false,
+		"map": false,
+		"set": true,
+		"custom": true,		
+		"values": [45,90,180,270]
+	  },
+	  "position": {
+		"name":"position",
+		"type": "string",
+		"required": false,
+		"map": false,
+		"set": true,
+		"custom": false,		
+		"values": ["dodge","fill","identity","jitter","stack"]
+	  },
+	  "direction": {
+		"name":"direction",
+		"type": "string",
+		"required": false,
+		"map": false,
+		"set": true,
+		"custom": false,		
+		"values": ["hv","vh"]
+	  },	  
+	  "number": {
+		"name":"number",
+		"type": "numeric",
+		"required": false,
+		"map": false,
+		"set": true,
+		"custom": true,		
+		"values": [2,3,4,5,6,7,8,9]
+	  },	  
+	  "adjust": {
+		"name":"adjust",
+		"type": "numeric",
+		"required": false,
+		"map": false,
+		"set": true,
+		"custom": true,		
+		"values": [0.05,0.1,0.2,0.5,0.75,1,1.25,1.5,2,3,4,5,10,20]
+	  },
+	  "intercept": {
+		"name":"intercept",
+		"type": "numeric",
+		"required": true,
+		"map": true,
+		"set": true,
+		"custom": true,		
+		"values": [1]
+	  },	
+	  "slope": {
+		"name":"slope",
+		"type": "numeric",
+		"required": true,
+		"map": true,
+		"set": true,
+		"custom": true,		
+		"values": [1]
+	  },
+	  "xintercept": {
+		"name":"xintercept",
+		"type": "numeric",
+		"required": true,
+		"map": true,
+		"set": true,
+		"custom": true,		
+		"values": [1]
+	  },
+	  "yintercept": {
+		"name":"yintercept",
+		"type": "numeric",
+		"required": true,
+		"map": true,
+		"set": true,
+		"custom": true,		
+		"values": [1]
+	  },
+	  "ymin": {
+		"name":"ymin",
+		"type": "numeric",
+		"required": true,
+		"map": true,
+		"set": false,
+		"custom": false,		
+		"values": []
+	  },
+	  "ymax": {
+		"name":"ymax",
+		"type": "numeric",
+		"required": true,
+		"map": true,
+		"set": false,
+		"custom": false,		
+		"values": []
+	  },
+	  "xmin": {
+		"name":"xmin",
+		"type": "numeric",
+		"required": true,
+		"map": true,
+		"set": false,
+		"custom": false,		
+		"values": []
+	  },
+	  "xmax": {
+		"name":"xmax",
+		"type": "numeric",
+		"required": true,
+		"map": true,
+		"set": false,
+		"custom": false,		
+		"values": []
+	  },	
+	  "width": {
+		"name":"width",
+		"type": "numeric",
+		"required": false,
+		"map": false,
+		"set": true,
+		"custom": true,		
+		"values": [1]
+	  },		  
+	  "binwidth": {
+		"name":"binwidth",
+		"type": "numeric",
+		"required": false,
+		"map": false,
+		"set": true,
+		"custom": true,		
+		"values": []
+	  }		  
+	},
+	
+	"Required": {
+	  "abline":["intercept","slope"],
+	  "text": ["label"],
+	  "contour": ["z"],
+	  "tile": ["fill"],
+	  "hline": ["yintercept"],
+	  "vline": ["xintercept"],
+	  "crossbar": ["ymin","ymax"],
+	  "errorbar": ["ymin","ymax"],
+	  "linerange": ["ymin","ymax"],
+	  "pointrange": ["ymin","ymax"],
+	  "ribbon": ["ymin","ymax"],
+	  "errorbarh": ["xmin","xmax"]
+	},
+	
+	"Statvar": {
+	  "contour":["..level..","..piece.."],
+	  "density2d": ["..level..","..piece.."],
+	  "hex": ["..count.."],
+	  "bin2d": ["..count.."],
+	  "quantile": ["..quantile.."]
+	}
+}

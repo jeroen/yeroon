@@ -1,0 +1,47 @@
+
+
+mainFunction <- function(){
+    library(RCurl);
+    library(rjson);
+
+    AuthSubSessionToken <- function(tempToken){
+        authorization <- paste('AuthSub token="',tempToken,'"',sep="");
+        output <- getURL("https://www.google.com/accounts/AuthSubSessionToken",ssl.verifypeer=F,httpheader=c(authorization=authorization));
+        if(grepl("Invalid AuthSub",output)){
+          return("");
+        }
+        return(output);
+    }
+    safeJson <- gsub("[()]","",POST$inputList);
+    inputList <- fromJSON(safeJson);
+    tempToken <- inputList$token;
+    
+    myToken <- AuthSubSessionToken(tempToken);
+    myToken <- sub("\n","",myToken);
+    myToken <- sub("Token=","",myToken);
+    
+    outputList <- list();
+    outputList$success <- T;
+    outputList$token <- myToken;
+    setCookie('test','foo')
+    cat(toJSON(outputList));
+    
+}
+
+printFailure <- function(e){
+    errorString <- toString(e$message);
+    errorString <- gsub("\"","'",errorString);
+    errorString <- gsub("\n"," ",errorString);
+    cat("{success:false, error:\"",errorString,"\"}",sep="");
+}
+
+#EXECUTED:
+setwd("/rdata/ggplot2");
+setTimeLimit(elapsed=60);
+mem.limits(vsize=500*1024*1024);
+
+setContentType('text/html');
+tryCatch(mainFunction(), error = function(e){printFailure(e)});
+
+setTimeLimit();
+

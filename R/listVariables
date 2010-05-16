@@ -1,0 +1,74 @@
+
+
+mainFunction <- function(){
+
+  library(rjson);
+  is.Date <- function(x) {return(any(is(x)=="Date"))}
+
+  randomNum <- gsub("[?:|*><{};\\/()#\"']","",POST$dataFile);
+  dataFileName <- paste(randomNum,".RData",sep="");
+  dataFileDest <- file.path('/rdata/ggplot2/Rdatafiles',dataFileName);
+
+  if(is.na(file.info(dataFileDest)$size)){
+    stop(paste("file:",dataFileName,"not available."));
+  }
+
+  load(dataFileDest);
+  
+  if(!exists("myData")){
+    stop("myData was not found in the workspace");
+  }
+  
+  outputTree <- list();
+  factors <- names(myData)[sapply(myData,is.factor)];
+  Dates <- names(myData)[sapply(myData,is.Date)];
+  numerics <-  names(myData)[!sapply(myData,is.factor) & !sapply(myData,is.Date)];
+
+  outputTree[[1]] <- list(draggable=F, id='ggfolder_Factor',text='Factor',children=list());
+  outputTree[[2]] <- list(draggable=F, id='ggfolder_Numeric',text='Numeric',children=list());
+  outputTree[[3]] <- list(draggable=F, id='ggfolder_Date',text='Date',children=list());
+  #outputTree[[3]] <- list(id='Intercept', text='Intercept', leaf=TRUE);
+
+  if(length(factors) > 0){
+    for(i in 1:length(factors)){
+      outputTree[[1]]$children[[i]] <-  list(id=factors[i],text=factors[i],leaf=TRUE)
+    }
+  }
+  if(length(numerics)>0){
+    for(i in 1:length(numerics)){
+      outputTree[[2]]$children[[i]] <-  list(id=numerics[i],text=numerics[i],leaf=TRUE)
+    }
+  }
+  if(length(Dates) > 0){
+    for(i in 1:length(Dates)){
+      outputTree[[3]]$children[[i]] <-  list(id=Dates[i],text=Dates[i],leaf=TRUE)
+    }
+  }
+
+  #mySummary <- summary(myData)
+  #mySummary <- rbind(colnames(mySummary),mySummary);
+  #colnames(mySummary) <- names(myData);
+  #rownames(mySummary) <- NULL
+  #varInfo <- apply(mySummary,2,as.list);
+  #cat("{success:true, dataFile:",randomNum,",variables:",toJSON(outputTree), ",varInfo:",toJSON(varInfo), "}",sep="");
+
+  cat("{success:true, dataFile:",randomNum,",variables:",toJSON(outputTree), "}",sep="");
+}
+
+printFailure <- function(e){
+    errorString <- toString(e$message);
+    errorString <- gsub("\"","'",errorString);
+    errorString <- gsub("\n"," ",errorString);
+    cat("{success:false, error:\"",errorString,"\"}",sep="");
+}
+
+#EXECUTED:
+setwd("/rdata/ggplot2");
+setTimeLimit(elapsed=60);
+mem.limits(vsize=500*1024*1024);
+
+setContentType('text/html');
+tryCatch(mainFunction(), error = function(e){printFailure(e)});
+
+setTimeLimit();
+

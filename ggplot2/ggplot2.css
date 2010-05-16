@@ -1,0 +1,306 @@
+body {
+    font-family:'lucida grande',tahoma,arial,sans-serif;
+    font-size:11px;
+}
+
+a {
+    color:#15428B;
+}
+a:link, a:visited {
+    text-decoration: none;
+}
+
+.guessGrid{
+	border: 1px solid #B5B8C8;
+}
+a:hover {
+    text-decoration: underline;
+}
+
+.viewport{
+
+}
+
+.x-panel-body p {
+	margin:5px;
+}
+.x-column-layout-ct .x-panel {
+	margin-bottom:5px;
+}
+.x-column-layout-ct .x-panel-dd-spacer {
+	margin-bottom:5px;
+}
+
+.start-div h2 {
+    font-size: 12px;
+    color: #555;
+    padding-bottom:5px;
+    border-bottom:1px solid #C3D0DF;
+}
+.start-div p {
+    margin: 10px 0;
+}
+
+.start-div{
+	margin: 30px 30px 30px 30px;
+}
+
+#demovideo{
+	color: red;
+	margin: 25px 0px 0px 0px;
+	padding-bottom: 20px;
+	font-weight:bold;
+}
+
+#copyright{
+	float:right;
+	margin: -20px 20px 0px 0px;
+	color: #fff; 
+	font-size: 10px;
+	font-weight:bold;
+}
+
+#copyright a{
+	color: #fff;
+}
+
+#citeDiv{
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	line-height: 1.2em;
+	padding: 5px 5px 5px 5px;
+	background-color: #FFFFFF;
+
+}
+
+#citeDiv pre{
+	padding: 5px 5px 5px 5px;
+	border: 1px solid;
+}
+
+#citeDiv p{
+	padding: 3px 3px 3px 3px;
+}
+
+.invalid {
+	font-weight: bold;
+	color: red;
+}
+
+.icon_density {
+	background-image:url(icons/icon_density.png) !important;
+}
+
+.icon_histogram {
+	background-image:url(icons/icon_bar.png) !important;
+}
+
+.icon_freqpoly {
+	background-image:url(icons/icon_freqpoly.png) !important;
+}
+
+.icon_area {
+	background-image:url(icons/icon_area.png) !important;
+}
+
+.icon_facet {
+	background-image:url(icons/icon_facet.png) !important;
+}
+
+.icon_bin2d {
+	background-image:url(icons/icon_bin2d.png) !important;
+}
+
+.icon_spreadsheet {
+	background-image:url(icons/spreadsheet.gif) !important;
+}
+
+.icon_csv{
+	background-image:url(icons/csv.gif) !important;
+}
+
+.icon_database{
+	background-image:url(icons/database.gif) !important;
+}
+
+.icon_bar {
+	background-image:url(icons/icon_bar.png) !important;
+}
+
+.icon_contour {
+	background-image:url(icons/icon_contour.png) !important;
+}
+
+.icon_density2d {
+	background-image:url(icons/icon_density2d.png) !important;
+}
+
+.icon_hex {
+	background-image:url(icons/icon_hex.png) !important;
+}
+
+.icon_rug {
+	background-image:url(icons/icon_rug.png) !important;
+}
+
+.icon_path {
+	background-image:url(icons/icon_path.png) !important;
+}
+
+.icon_polygon {
+	background-image:url(icons/icon_polygon.png) !important;
+}
+
+.icon_map {
+	background-image:url(icons/connect.gif) !important;
+}
+
+.icon_prop {
+	background-image:url(icons/cmp.gif) !important;
+}
+
+.icon_boxplot {
+	background-image:url(icons/icon_boxplot.png) !important;
+}
+
+.icon_tile {
+	background-image:url(icons/icon_tile.png) !important;
+}
+
+.icon_hex {
+	background-image:url(icons/icon_hex.png) !important;
+}
+.icon_point {
+	background-image:url(icons/icon_point.png) !important;
+}
+
+.icon_smooth {
+	background-image:url(icons/icon_smooth.png) !important;
+}
+
+.icon_text {
+	background-image:url(icons/icon_text.png) !important;
+}
+
+.icon_set {
+	background-image:url(icons/config.gif) !important;
+}
+
+.delete {
+	background-image:url(icons/delete2.gif) !important;
+}
+
+.add{
+	background-image:url(icons/drop-add.gif) !important;
+}
+
+.fit {
+	background-image:url(icons/application_go.png) !important;
+}
+
+.bib {
+	background-image:url(icons/bibtex-icon.png) !important;
+}
+
+.reset {
+	background-image:url(icons/refresh.gif) !important;
+}
+.pdf{
+	background-image:url(icons/pdf16.png) !important;
+}
+.icon_quantile{
+	background-image:url(icons/icon_quantile.png) !important;
+}
+.icon_step{
+	background-image:url(icons/icon_step.png) !important;
+}
+.icon_abline{
+	background-image:url(icons/icon_abline.png) !important;
+}
+.icon_hline{
+	background-image:url(icons/icon_hline.png) !important;
+}
+
+.icon_vline{
+	background-image:url(icons/icon_vline.png) !important;
+}
+.icon_crossbar{
+	background-image:url(icons/icon_crossbar.png) !important;
+}
+.icon_errorbar{
+	background-image:url(icons/icon_errorbar.png) !important;
+}
+.icon_errorbarh{
+	background-image:url(icons/icon_errorbarh.png) !important;
+}
+.icon_linerange{
+	background-image:url(icons/icon_linerange.png) !important;
+}
+.icon_pointrange{
+	background-image:url(icons/icon_pointrange.png) !important;
+}
+.icon_ribbon{
+	background-image:url(icons/icon_smooth.png) !important;
+}
+.menuOpen{
+	background-image:url(icons/open24.png) !important;
+}
+
+.menuClose{
+	background-image:url(icons/close24.png) !important;
+}
+
+.menuPDF{
+	background-image:url(icons/pdf24.png) !important;
+}
+
+.menuSVG{
+	background-image:url(icons/svg_icon.png) !important;
+}
+
+.menuView{
+	background-image:url(icons/options24.png) !important;
+}
+
+.menuCite{
+	background-image:url(icons/notepad24.png) !important;
+}
+
+.menuHelp{
+	background-image:url(icons/about24.png) !important;
+}
+
+#historyCmp{
+	border-top: 1px solid #99BBE8;
+	background: url(images/shadow.png) repeat-x;
+	font-family: "Courier New", Courier, monospace;
+	height: 90%;
+	overflow-x: hidden; 
+	overflow-y: scroll;	
+	font-weight: bold;
+	color: #000080;
+	padding: 3px 5px 3px 5px;
+	margin-bottom: 5px;
+}
+
+#syntaxdiv{
+	font-weight: bold;
+	color: red;
+	padding: 5px 5px 5px 5px;
+}
+#cursor{
+	display: none;
+	margin-bottom: -2px;
+}
+
+.menu-title{
+    color: #FFFFFF;
+    border-style: solid;
+    border-color:#DAE6F4 #99bbe8 #99bbe8 #DAE6F4;
+    border-width: 1px;
+    margin:-2px -2px 0;
+    background:#15428b;
+    font:bold 10px tahoma,arial,verdana,sans-serif;
+    display:block;
+    padding:3px;
+}

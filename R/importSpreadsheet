@@ -1,0 +1,83 @@
+
+
+mainFunction <- function(){
+    library(RCurl);
+    library(rjson);
+    
+    getCSV <- function(token,resourceId){
+    	authorization <- paste('AuthSub token="',token,'"',sep="");
+    	myURL <- paste("http://spreadsheets.google.com/feeds/download/spreadsheets/Export?key=",resourceId,"&exportFormat=csv",sep="");
+    	myCSV <- getURL(myURL,ssl.verifypeer=F,httpheader=c(accept="text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",authorization=authorization),verbose=T);
+    	return(myCSV);
+    }
+
+    inputList <- fromJSON(POST$inputList);
+    
+    myToken <- inputList$token;
+    myResource <- inputList$resourceId;
+    myFilename <- paste(inputList$filename,".csv",sep="");
+    
+    myTempfile <- tempfile();
+    mySpreadsheet <- getCSV(myToken,myResource);
+    
+    if(grepl("Invalid AuthSub token",substring(mySpreadsheet,1,300))){
+      stop("Session refused. Please try to log-out and log-in again.");
+    }
+
+    write(mySpreadsheet,myTempfile);
+    
+    if(file.info(myTempfile)$size > 10000000) {
+      stop("This file is larger than 10MB! Please upload a smaller file.");
+    }
+    
+    destination <- file.path('/rdata/ggplot2/upload',myFilename);
+    #copy not really needed, but for feedback/research purposes.
+    file.copy(myTempfile,destination,overwrite=TRUE);
+
+    myData <- read.csv(myTempfile);
+    
+    if(ncol(myData) > 100){
+      stop("Your dataset contains more than the maximum of 100 variables.");
+    }
+    if(nrow(myData) > 100000){
+      stop("Your dataset contains more than the maximum of 100.000 rows.");
+    }
+
+    outputList <- list();
+    
+    #variable names:
+    outputList$variableNames <- names(myData);
+
+    #TEMP FIX REMOVES DOTS TO PREVENT JAVASCRIPT ISSUES:
+    outputList$variableNames <- gsub("\\.","_",outputList$variableNames);
+    
+    #save workspace:
+    randomNum <- round(runif(1,1,999999));
+    dataFileName <- paste(randomNum,".RData",sep="");
+    dataFileDest <- file.path('/rdata/ggplot2/Rdatafiles',dataFileName);
+    save(destination, myData, file=dataFileDest);
+    outputList$dataFile <- randomNum;
+    
+    #encode json:
+    cat("{success:true, output:",toJSON(outputList), "}",sep="");
+}
+
+printFailure <- function(e){
+    errorString <- toString(e$message);
+    errorString <- gsub("\"","'",errorString);
+    errorString <- gsub("\n"," ",errorString);
+    cat("{success:false, error:\"",errorString,"\"}",sep="");
+}
+
+#EXECUTED:
+setwd("/rdata/ggplot2");
+setTimeLimit(elapsed=60);
+mem.limits(vsize=500*1024*1024);
+
+myData = "";
+setContentType('text/html');
+tryCatch(mainFunction(), error = function(e){printFailure(e)});
+
+setTimeLimit();
+
+

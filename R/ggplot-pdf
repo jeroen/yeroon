@@ -1,0 +1,144 @@
+
+#this app uses symlinks /rdata en /wwwroot
+setwd("/rdata/ggplot2");
+
+setTimeLimit(elapsed=40);
+setContentType("text/html");
+
+# you might have to make /WWW_DIRECTORY/ggplot2/plots writeable
+
+### actual code starts here ###
+
+library(ggplot2);
+library(rjson);
+myPlot = NULL;
+
+drawPlot <- function(){
+
+	plotConfig <- fromJSON(as.character(POST$plotRequest)); 
+	
+	######################### injection fix: ##########################
+	safeRequest <- gsub("[()]","",as.character(POST$plotRequest));
+	plotConfig <- fromJSON(safeRequest);
+	###################################################################
+	
+
+	dataFile <- plotConfig$dataFile;
+	dataFileDest <- file.path('/rdata/ggplot2/Rdatafiles',paste(dataFile,'.RData',sep=""));
+	load(dataFileDest);
+	
+	x <- substring(plotConfig[["x"]],5);
+	y <- substring(plotConfig[["y"]],5);
+
+	myPlot <- ggplot(myData) + aes_string(x=x, y=y);
+	
+	if(!is.null(plotConfig[["weight"]])){
+		weight <- substring(plotConfig[["weight"]],5);
+		myPlot <- myPlot + aes_string(weight=weight);	
+	}	
+	
+	if(!is.null(plotConfig[["group"]])){
+		group <- substring(plotConfig[["group"]],5);
+		myPlot <- myPlot + aes_string(group=group);
+	}
+	
+	if(!is.null(plotConfig[["colour"]])){
+		colour <- substring(plotConfig[["colour"]],5);
+		myPlot <- myPlot + aes_string(colour=colour);
+	}
+
+	if(!is.null(plotConfig[["facet"]][["map"]])){
+		facet <- substring(plotConfig[["facet"]][["map"]],5);
+		if(!is.null(plotConfig[["facet"]][["scales"]])){
+			scales = substring(plotConfig[["facet"]][["scales"]],5);
+		} else {
+			scales = "fixed";
+		}
+		if(!is.null(plotConfig[["facet"]][["nrow"]])){
+			nrow = as.numeric(substring(plotConfig[["facet"]][["nrow"]],5));
+		} else {
+			nrow = NULL;
+		}		
+		myPlot <- myPlot + facet_wrap(as.formula(paste("~",facet)), nrow=nrow, scales=scales);
+	}
+	
+	layers <- plotConfig$layers;
+
+	if(length(layers) < 1){
+		myPlot <- myPlot + geom_blank();
+	} else{
+	
+		for(i in 1:length(layers)){
+
+			thisLayer <- layers[[i]];
+			thisAesthetics <- list();
+
+			#note: loop has to be backwards because of the removing of elements by <- NULL;
+			
+			for(j in length(thisLayer):1){
+			
+				thisValue <- thisLayer[[j]];
+				if(substr(thisValue,1,3) == "set"){
+					thisLayer[[j]] <- substring(thisValue,5)
+
+					#temp fixes:
+					if(thisLayer[[j]] == "FALSE" || thisLayer[[j]] == "TRUE") {
+						thisLayer[[j]] <- as.logical(thisLayer[[j]]);
+					}
+					
+					thisProperty <- names(thisLayer[j]);
+					if(thisProperty == "width" || thisProperty == "xintercept" || thisProperty == "yintercept" || thisProperty == "intercept" || thisProperty == "slope" || thisProperty == "binwidth" || thisProperty == "alpha" || thisProperty == "size" || thisProperty == "weight" || thisProperty == "adjust"|| thisProperty == "shape" || thisProperty == "bins" || thisProperty == "angle"){
+						thisLayer[[j]] <- as.numeric(thisLayer[[j]]);
+					}
+					
+					if(thisProperty == "number"){
+						Nquantiles <- as.numeric(thisLayer[[j]]) + 2;
+						quantiles <- seq(0,1,length.out=Nquantiles);
+						quantiles <- quantiles[-c(1,Nquantiles)];
+						thisLayer$quantiles <- quantiles;
+						thisLayer[j] <- NULL;
+					}					
+					
+				}
+
+				###
+				
+				if(substr(thisValue,1,3) == "map"){
+					mapVariable <- substring(thisValue,5);
+					mapProperty <- names(thisLayer[j]);
+					thisAesthetics[mapProperty] = mapVariable;
+					thisLayer[j] <- NULL;
+				}
+			}
+			if(length(thisAesthetics) > 0){
+			
+				myMappings <- as.call(append(thisAesthetics,aes_string,after=0));
+				thisLayer$mapping <- myMappings
+			}
+			myPlot <- myPlot + eval(as.call(append(thisLayer,layer,after=0)));
+		}
+	}
+
+	randomnum <- round(runif(1,0,100000));
+	filename <- paste(randomnum,".pdf",sep="");
+	pdf(file=paste("/wwwroot/ggplot2/plots/",filename,sep=""), paper="a4r", width=11.67, height=8.27);
+	print(myPlot);
+	dev.off();
+  sink();
+	cat("{success:true, pdfurl:\"",filename,"\"}",sep="");
+	
+}
+
+printFailure <- function(e){
+    sink();
+    errorString <- toString(e$message);
+    errorString <- gsub("\"","'",errorString);
+    errorString <- gsub("\n"," ",errorString);
+    cat("{success:false, error:\"",errorString,"\", request:", as.character(POST$plotRequest), "}",sep="");
+} 
+
+
+sink(tempfile());
+tryCatch(drawPlot(), error = function(e){printFailure(e)});
+setTimeLimit();
+
